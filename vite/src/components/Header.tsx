@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -6,29 +7,33 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { FC } from "react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { JsonRpcSigner, ethers } from "ethers";
+import { Dispatch, FC, SetStateAction, useEffect } from "react";
 
-const Header: FC = () => {
+interface HeaderProps {
+  signer: JsonRpcSigner | null;
+  setSigner: Dispatch<SetStateAction<JsonRpcSigner | null>>;
+}
+
+const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
+  const onClickMetamask = async () => {
+    try {
+      if (!window.ethereum) return;
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+
+      setSigner(await provider.getSigner());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <Flex
-      h={16}
-      borderBottom="2px"
-      borderColor="gray.200"
-      alignItems="center"
-      justifyContent="space-between"
-    >
-      <Flex
-        w={36}
-        fontWeight="bold"
-        fontSize={20}
-        ml={4}
-        borderRight="2px"
-        borderColor="gray.200"
-      >
-        Save the SEA
+    <Flex h={20} justifyContent="space-between" alignItems="center" px={4}>
+      <Flex w={40} fontSize={20} fontWeight="semibold">
+        🐢 Save the SEA
       </Flex>
-      <Flex gap={24} display={["none", "none", "flex"]}>
+      <Flex display={["none", "none", "flex"]} gap={8}>
         <Button variant="link" colorScheme="blue">
           Home
         </Button>
@@ -39,27 +44,34 @@ const Header: FC = () => {
           Sale
         </Button>
       </Flex>
-      <Flex w={40} justifyContent="end" display={["none", "none", "flex"]}>
-        <Button variant="link" mr={4}>
-          Login
-        </Button>
+      <Flex display={["none", "none", "flex"]} w={40} justifyContent="end">
+        {signer ? (
+          <Button colorScheme="blue">
+            {signer.address.substring(0, 7)}...
+          </Button>
+        ) : (
+          <Button colorScheme="blue" onClick={onClickMetamask}>
+            🦊 로그인
+          </Button>
+        )}
       </Flex>
-      <Flex display={["flex", "flex", "none"]} mr={4}>
+      <Flex display={["flex", "flex", "none"]}>
         <Menu>
           <MenuButton
-            textColor="blue.500"
-            bgColor="white"
+            colorScheme="blue"
             as={Button}
             rightIcon={<ChevronDownIcon />}
           >
-            Menu
+            {signer ? `${signer.address.substring(0, 7)}...` : "메뉴"}
           </MenuButton>
           <MenuList>
-            <MenuItem>Login</MenuItem>
-            <MenuItem>Logout</MenuItem>
+            {!signer && (
+              <MenuItem onClick={onClickMetamask}>🦊 로그인</MenuItem>
+            )}
             <MenuItem>Home</MenuItem>
             <MenuItem>Mint</MenuItem>
             <MenuItem>Sale</MenuItem>
+            {signer && <MenuItem>로그아웃</MenuItem>}
           </MenuList>
         </Menu>
       </Flex>
