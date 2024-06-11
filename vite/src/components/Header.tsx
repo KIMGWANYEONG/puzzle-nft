@@ -8,7 +8,8 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { JsonRpcSigner, ethers } from "ethers";
-import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   signer: JsonRpcSigner | null;
@@ -16,6 +17,8 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
+  const navigate = useNavigate();
+
   const onClickMetamask = async () => {
     try {
       if (!window.ethereum) return;
@@ -28,27 +31,48 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
     }
   };
 
+  const onClickLogOut = () => {
+    setSigner(null);
+  };
+
   return (
     <Flex h={20} justifyContent="space-between" alignItems="center" px={4}>
       <Flex w={40} fontSize={20} fontWeight="semibold">
         🐢 Save the SEA
       </Flex>
       <Flex display={["none", "none", "flex"]} gap={8}>
-        <Button variant="link" colorScheme="blue">
+        <Button variant="link" colorScheme="blue" onClick={() => navigate("/")}>
           Home
         </Button>
-        <Button variant="link" colorScheme="blue">
+        <Button
+          variant="link"
+          colorScheme="blue"
+          onClick={() => navigate("/mint")}
+        >
           Mint
         </Button>
-        <Button variant="link" colorScheme="blue">
+        <Button
+          variant="link"
+          colorScheme="blue"
+          onClick={() => navigate("/sale")}
+        >
           Sale
         </Button>
       </Flex>
       <Flex display={["none", "none", "flex"]} w={40} justifyContent="end">
         {signer ? (
-          <Button colorScheme="blue">
-            {signer.address.substring(0, 7)}...
-          </Button>
+          <Menu>
+            <MenuButton
+              colorScheme="blue"
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+            >
+              {signer.address.substring(0, 7)}...
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={onClickLogOut}>로그아웃</MenuItem>
+            </MenuList>
+          </Menu>
         ) : (
           <Button colorScheme="blue" onClick={onClickMetamask}>
             🦊 로그인
@@ -71,7 +95,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
             <MenuItem>Home</MenuItem>
             <MenuItem>Mint</MenuItem>
             <MenuItem>Sale</MenuItem>
-            {signer && <MenuItem>로그아웃</MenuItem>}
+            {signer && <MenuItem onClick={onClickLogOut}>로그아웃</MenuItem>}
           </MenuList>
         </Menu>
       </Flex>
