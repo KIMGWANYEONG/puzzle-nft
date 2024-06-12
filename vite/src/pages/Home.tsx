@@ -55,7 +55,7 @@ const Home: FC = () => {
       <Flex
         flexDir="column"
         gap={[2, 2, 4]}
-        bgColor="blue.100"
+        bgColor="green.100"
         h={[20, 20, 40]}
         justifyContent="center"
         alignItems="center"
@@ -64,7 +64,7 @@ const Home: FC = () => {
         <Text>⛔️ 바다가 위험해! 구해줘! ⛔️</Text>
         <Button
           variant="outline"
-          colorScheme="blue"
+          colorScheme="green"
           onClick={() => navigate("/mint")}
         >
           구하러가기

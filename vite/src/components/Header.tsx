@@ -53,7 +53,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
           <Button
             key={i}
             variant="link"
-            colorScheme="blue"
+            colorScheme="green"
             onClick={() => navigate(v.path)}
           >
             {v.name}
@@ -64,7 +64,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
         {signer ? (
           <Menu>
             <MenuButton
-              colorScheme="blue"
+              colorScheme="green"
               as={Button}
               rightIcon={<ChevronDownIcon />}
             >
@@ -75,7 +75,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
             </MenuList>
           </Menu>
         ) : (
-          <Button colorScheme="blue" onClick={() => useMetamask(setSigner)}>
+          <Button colorScheme="green" onClick={() => useMetamask(setSigner)}>
             🦊 로그인
           </Button>
         )}
@@ -83,7 +83,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
       <Flex display={["flex", "flex", "none"]}>
         <Menu>
           <MenuButton
-            colorScheme="blue"
+            colorScheme="green"
             as={Button}
             rightIcon={<ChevronDownIcon />}
           >

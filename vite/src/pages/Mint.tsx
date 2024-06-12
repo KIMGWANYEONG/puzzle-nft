@@ -111,7 +111,7 @@ const Mint: FC = () => {
               </NumberInput>
             </Flex>
             <Button
-              colorScheme="blue"
+              colorScheme="green"
               size={["sm", "sm", "md"]}
               onClick={onClickMintNft}
               isDisabled={isLoading || tokenId === 0 || amount === 0}
@@ -127,7 +127,7 @@ const Mint: FC = () => {
               🥹 바다를 구하기 위해선 로그인이 필요해!
             </Text>
             <Button
-              colorScheme="blue"
+              colorScheme="green"
               w="fit-content"
               onClick={() => useMetamask(setSigner)}
             >
