@@ -13,7 +13,7 @@ import { OutletContext } from "../components/Layout";
 import PuzzleCard from "../components/PuzzleCard";
 
 const Home: FC = () => {
-  const [mintedList, setMintedList] = useState<boolean[]>([]);
+  const [mintedList, setMintedList] = useState<number[]>([]);
   const [progress, setProgress] = useState<number>(0);
 
   const { signer, mintContract } = useOutletContext<OutletContext>();
@@ -24,9 +24,9 @@ const Home: FC = () => {
     try {
       if (!signer || !mintContract) return;
 
-      const response = await mintContract.checkNfts(signer.address);
+      const response = await mintContract.balanceOfNfts(signer.address);
 
-      const temp = response.map((v: boolean) => v);
+      const temp = response.map((v: bigint) => Number(v));
 
       setMintedList(temp);
     } catch (error) {
@@ -55,7 +55,7 @@ const Home: FC = () => {
       <Flex
         flexDir="column"
         gap={[2, 2, 4]}
-        bgColor="green.100"
+        bgColor="blue.100"
         h={[20, 20, 40]}
         justifyContent="center"
         alignItems="center"
@@ -64,7 +64,7 @@ const Home: FC = () => {
         <Text>⛔️ 바다가 위험해! 구해줘! ⛔️</Text>
         <Button
           variant="outline"
-          colorScheme="green"
+          colorScheme="blue"
           onClick={() => navigate("/mint")}
         >
           구하러가기
@@ -89,7 +89,7 @@ const Home: FC = () => {
             </Flex>
             <Grid templateColumns={"repeat(4, 1fr)"}>
               {mintedList.map((v, i) => (
-                <PuzzleCard key={i} index={i} isMinted={v} />
+                <PuzzleCard key={i} index={i} balance={v} />
               ))}
             </Grid>
           </>

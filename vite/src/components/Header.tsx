@@ -7,29 +7,37 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { JsonRpcSigner, ethers } from "ethers";
+import { JsonRpcSigner } from "ethers";
 import { Dispatch, FC, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMetamask } from "../lib";
 
 interface HeaderProps {
   signer: JsonRpcSigner | null;
   setSigner: Dispatch<SetStateAction<JsonRpcSigner | null>>;
 }
 
+const navLinks = [
+  {
+    name: "Home",
+    path: "/",
+  },
+  {
+    name: "Mint",
+    path: "/mint",
+  },
+  {
+    name: "My",
+    path: "/my",
+  },
+  {
+    name: "Sale",
+    path: "/sale",
+  },
+];
+
 const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
   const navigate = useNavigate();
-
-  const onClickMetamask = async () => {
-    try {
-      if (!window.ethereum) return;
-
-      const provider = new ethers.BrowserProvider(window.ethereum);
-
-      setSigner(await provider.getSigner());
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const onClickLogOut = () => {
     setSigner(null);
@@ -41,29 +49,22 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
         🐢 Save the SEA
       </Flex>
       <Flex display={["none", "none", "flex"]} gap={8}>
-        <Button
-          variant="link"
-          colorScheme="green"
-          onClick={() => navigate("/")}
-        >
-          Home
-        </Button>
-        <Button variant="link" colorScheme="" onClick={() => navigate("/mint")}>
-          Mint
-        </Button>
-        <Button
-          variant="link"
-          colorScheme="green"
-          onClick={() => navigate("/sale")}
-        >
-          Sale
-        </Button>
+        {navLinks.map((v, i) => (
+          <Button
+            key={i}
+            variant="link"
+            colorScheme="blue"
+            onClick={() => navigate(v.path)}
+          >
+            {v.name}
+          </Button>
+        ))}
       </Flex>
       <Flex display={["none", "none", "flex"]} w={40} justifyContent="end">
         {signer ? (
           <Menu>
             <MenuButton
-              colorScheme="green"
+              colorScheme="blue"
               as={Button}
               rightIcon={<ChevronDownIcon />}
             >
@@ -74,7 +75,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
             </MenuList>
           </Menu>
         ) : (
-          <Button colorScheme="green" onClick={onClickMetamask}>
+          <Button colorScheme="blue" onClick={() => useMetamask(setSigner)}>
             🦊 로그인
           </Button>
         )}
@@ -82,7 +83,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
       <Flex display={["flex", "flex", "none"]}>
         <Menu>
           <MenuButton
-            colorScheme="green"
+            colorScheme="blue"
             as={Button}
             rightIcon={<ChevronDownIcon />}
           >
@@ -90,11 +91,15 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
           </MenuButton>
           <MenuList>
             {!signer && (
-              <MenuItem onClick={onClickMetamask}>🦊 로그인</MenuItem>
+              <MenuItem onClick={() => useMetamask(setSigner)}>
+                🦊 로그인
+              </MenuItem>
             )}
-            <MenuItem>Home</MenuItem>
-            <MenuItem>Mint</MenuItem>
-            <MenuItem>Sale</MenuItem>
+            {navLinks.map((v, i) => (
+              <MenuItem key={i} onClick={() => navigate(v.path)}>
+                {v.name}
+              </MenuItem>
+            ))}
             {signer && <MenuItem onClick={onClickLogOut}>로그아웃</MenuItem>}
           </MenuList>
         </Menu>
