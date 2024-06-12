@@ -41,19 +41,19 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
         🐢 Save the SEA
       </Flex>
       <Flex display={["none", "none", "flex"]} gap={8}>
-        <Button variant="link" colorScheme="blue" onClick={() => navigate("/")}>
-          Home
-        </Button>
         <Button
           variant="link"
-          colorScheme="blue"
-          onClick={() => navigate("/mint")}
+          colorScheme="green"
+          onClick={() => navigate("/")}
         >
+          Home
+        </Button>
+        <Button variant="link" colorScheme="" onClick={() => navigate("/mint")}>
           Mint
         </Button>
         <Button
           variant="link"
-          colorScheme="blue"
+          colorScheme="green"
           onClick={() => navigate("/sale")}
         >
           Sale
@@ -63,7 +63,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
         {signer ? (
           <Menu>
             <MenuButton
-              colorScheme="blue"
+              colorScheme="green"
               as={Button}
               rightIcon={<ChevronDownIcon />}
             >
@@ -74,7 +74,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
             </MenuList>
           </Menu>
         ) : (
-          <Button colorScheme="blue" onClick={onClickMetamask}>
+          <Button colorScheme="green" onClick={onClickMetamask}>
             🦊 로그인
           </Button>
         )}
@@ -82,7 +82,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
       <Flex display={["flex", "flex", "none"]}>
         <Menu>
           <MenuButton
-            colorScheme="blue"
+            colorScheme="green"
             as={Button}
             rightIcon={<ChevronDownIcon />}
           >
