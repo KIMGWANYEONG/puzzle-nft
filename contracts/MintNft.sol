@@ -16,7 +16,8 @@ contract MintNft is ERC1155 {
     }
 
     function mintNft(uint _tokenId, uint _amount) public {
-        require(_tokenId < 17, "No exist token.");
+        require(_tokenId < 17, "Not exist token.");
+
         _mint(msg.sender, _tokenId, _amount, "");
     }
 
@@ -24,11 +25,11 @@ contract MintNft is ERC1155 {
         return string(abi.encodePacked(metadataUri, Strings.toString(_tokenId), ".json"));
     }
 
-    function checkNfts(address _owner) public view returns(bool[16] memory) {
+    function checkNfts(address _owner) public view returns (bool[16] memory) {
         bool[16] memory result;
 
-        for (uint i = 0; i < 16; i ++) {
-            if (balanceOf(_owner, i + 1) > 0) {
+        for(uint i = 0; i < 16; i++) {
+            if(balanceOf(_owner, i + 1) > 0) {
                 result[i] = true;
             } else {
                 result[i] = false;

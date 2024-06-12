@@ -7,8 +7,8 @@ import "./index.css";
 
 const theme = extendTheme({
   fonts: {
-    heading: "Yeongdeok Snow Crab",
-    body: "Yeongdeok Snow Crab",
+    heading: "yeongdeok-sea",
+    body: "yeongdeok-sea",
   },
 });
 
